@@ -18,22 +18,28 @@ CAMADAS        = ('raw','standardized', 'conformed', 'aplicacao')
 
 '''
 cada url aponta para a localização do recurso na web
-cada nome em NOMES diz como o arquivo vai ser chamado em raw
+cada nome em NOMES_RAW diz como o arquivo vai ser chamado
 '''
 
 URLS = ('http://200.152.38.155/CNPJ/K3241.K03200Y0.D20108.EMPRECSV.zip',
         'http://200.152.38.155/CNPJ/K3241.K03200Y0.D20108.SOCIOCSV.zip',
         'http://200.152.38.155/CNPJ/K3241.K03200Y0.D20108.ESTABELE.zip')
 
-NOMES = ('empresa.zip',
-         'socio.zip',
-         'estabelecimento.zip')
+NOMES_RAW = ('empresa.zip',
+             'socio.zip',
+             'estabelecimento.zip')
 
 
 
 #==============================================================================
 # TRANSFORM
+'''
+cada nome em NOMES_STANDARDIZED diz como o arquivo vai ser chamado
+'''
 
+NOMES_STANDARDIZED = ('empresa.csv',
+                      'socio.csv',
+                      'estabelecimento.csv')
 
 
 #==============================================================================

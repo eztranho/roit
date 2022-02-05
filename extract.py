@@ -11,10 +11,12 @@ def extrair_um(url, caminho):
         
         with open(caminho, 'wb') as f:
             f.write(request.content)
-            print(f'arquivo baixado de {url}\npara{caminho}')
+            print(f'arquivo baixado de {url}\npara {caminho}')
     
     except Exception:
         print(f'erro ao baixar {url}')
         print(f'{exc_info[1]}')
         
-
+def mock_extrair_um(url, caminho):
+    print(f'fingindo que está baixando o arquivo em {url}')
+    print(f'arquivo baixado de {url}\npara{caminho}')

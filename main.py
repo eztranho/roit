@@ -43,10 +43,10 @@ if __name__ == '__main__':
     caminhos_stand = criar_caminhos('standardized')
     caminhos_conformed = criar_caminhos('conformed')
     
-    for url, caminho_raw, caminho_stand, caminho_conformed  in zip(URLS, 
-                                                                   caminhos_raw, 
-                                                                   caminhos_stand, 
-                                                                   caminhos_conformed):
+    for url, caminho_raw, caminho_stand, caminho_conformed in zip(URLS,
+                                                                  caminhos_raw, 
+                                                                  caminhos_stand, 
+                                                                  caminhos_conformed):
         try:
             mock_extrair_um(url, caminho_raw) # !!! apenas para evitar downloads demorados
                                               # na fase de desenvolvimento

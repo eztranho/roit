@@ -11,7 +11,8 @@ cada camada é implementada como uma pasta em DATA_LAKE_PATH
 '''
 DATA_LAKE_PATH = 'C:\\Users\\Tales\\Desktop\\data_lake'
 CAMADAS        = ('raw','standardized', 'conformed', 'aplicacao')
-
+EXTENSOES      = ('.zip', '.csv', '.csv', '.sql')
+NOMES          = ('empresa', 'socio', 'estabelecimento')
 
 #==============================================================================
 # EXTRACT
@@ -25,9 +26,6 @@ URLS = ('http://200.152.38.155/CNPJ/K3241.K03200Y0.D20108.EMPRECSV.zip',
         'http://200.152.38.155/CNPJ/K3241.K03200Y0.D20108.SOCIOCSV.zip',
         'http://200.152.38.155/CNPJ/K3241.K03200Y0.D20108.ESTABELE.zip')
 
-NOMES_RAW = ('empresa.zip',
-             'socio.zip',
-             'estabelecimento.zip')
 
 
 
@@ -37,9 +35,7 @@ NOMES_RAW = ('empresa.zip',
 cada nome em NOMES_STANDARDIZED diz como o arquivo vai ser chamado
 '''
 
-NOMES_STANDARDIZED = ('empresa.csv',
-                      'socio.csv',
-                      'estabelecimento.csv')
+
 
 
 #==============================================================================

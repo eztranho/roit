@@ -7,7 +7,9 @@ from pathlib import Path
 import dask.dataframe as dd
 
 '''
-
+!!! alterar campos de data para separar com hífen
+!!! juntar estabelecimento como um único cnpj
+!!! tabela socio deve ser estendida e separada em 2 tipos: pf e pj
 '''
 #=====================================================================================
 # HELPER FUNCTIONS
@@ -46,7 +48,7 @@ def deletar_csvs_que_nao_terminam_em_numero(pasta):
 # CLASSES
 # usar specification design pattern
     
-class Arquivo():
+class Arquivo(): # dask recomenda não estender dd.DataFrame, então df será atributo
     '''
     base class. tem 3 tipos: empresa, socio e estabelecimento
     as colunas mudam, o dtype muda e processamento muda
@@ -81,33 +83,33 @@ class Arquivo():
     def get_df(self):
         return self.df
   
-class Empresa(Arquivo): # dask recomenda não estender dd.DataFrame, então df será atributo
-    columns = ['cnpj_basico', 'razao_social', 'natureza_juridica', 
-               'qualificacao_do_resp', 'capital_social', 'porte', 'ente federativo']
+class Empresa(Arquivo): 
+    columns = ['cnpj_basico', 'razao_social', 'natureza_juridica_id', 
+               'qualificacao_do_resp_id', 'capital_social', 'porte_id', 'ente federativo']
     
     def __init__(self, caminho_conformed):
         super().__init__(caminho_conformed)
         
 class Socio(Arquivo):
-    columns = ['cnpj_basico', 'id_socio', 'nome_ou_razao_social', 
-               'cnpj_ou_cpf', 'qualificacao_socio', 'data_entrada', 
-               'pais', 'cpf_representante_legal', 
-               'nome_representante', 'qualificacao_representante',
-               'faixa_etaria']
+    columns = ['cnpj_basico', 'ident_socio_id', 'nome_ou_razao_social', 
+               'cnpj_ou_cpf', 'qualificacao_socio_id', 'data_entrada', 
+               'pais_id', 'cpf_representante_legal', 
+               'nome_representante', 'qualificacao_representante_id',
+               'faixa_etaria_id']
     
     def __init__(self, caminho_conformed):
         super().__init__(caminho_conformed)
         
 class Estabelecimento(Arquivo):
-    columns = ['cnpj_basico', 'cnpj_ordem', 'cnpj_dv', 'id_matriz_filial',
-               'nome_fantasia', 'sit_cadastral', 'data_sit_cadastral',
-               'motivo_sit_cadastral', 'nome_cidade_exterior', 'pais',
-               'data_inicio_atividade', 'cnae_fiscal_principal', 
-               'cnae_fiscal_secundario', 'tipo_logradouro',
+    columns = ['cnpj_basico', 'cnpj_ordem', 'cnpj_dv', 'ident_matriz_filial_id',
+               'nome_fantasia', 'sit_cadastral_id', 'data_sit_cadastral',
+               'motivo_sit_cadastral', 'nome_cidade_exterior', 'pais_id',
+               'data_inicio_atividade', 'cnae_fiscal_principal_id', 
+               'cnae_fiscal_secundario_id', 'tipo_logradouro',
                'logradouro', 'numero', 'complemento', 'bairro',
                'cep', 'uf', 'municipio', 'ddd_1', 'tel_1',
                'ddd_2', 'tel_2', 'ddd_fax', 'tel_fax',
-               'email', 'sit_especial', 'data_sit_especial']
+               'email', 'sit_especial_id', 'data_sit_especial']
     
     def __init__(self, caminho_conformed):
         super().__init__(caminho_conformed)

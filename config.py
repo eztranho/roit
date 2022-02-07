@@ -40,3 +40,8 @@ cada nome em NOMES_STANDARDIZED diz como o arquivo vai ser chamado
 
 #==============================================================================
 # LOAD
+DB_NAME = 'roit'
+USER = 'postgres'
+PASSWORD = ''
+HOST = 'localhost'
+PORT = '5432'

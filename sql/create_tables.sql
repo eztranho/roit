@@ -76,7 +76,7 @@ CREATE TABLE Empresa (
 	razao_social VARCHAR(255),  -- !!! pegar o maior valor
 	natureza_juridica_id CHAR(4), 
     qualificacao_do_resp_id CHAR(2), 
-    capital_social NUMERIC(9,2), 
+    capital_social NUMERIC(15,2), 
     porte_id CHAR(2), 
     ente_federativo VARCHAR(255),
 	FOREIGN KEY (natureza_juridica_id) REFERENCES NaturezaJuridica(natureza_juridica_id),
@@ -84,7 +84,8 @@ CREATE TABLE Empresa (
 );
 
 CREATE TABLE Socio (
-    cnpj_basico CHAR(8) NOT NULL PRIMARY KEY, 
+    id SERIAL NOT NULL PRIMARY KEY, -- 
+    cnpj_basico CHAR(8) NOT NULL, 
 	ident_socio_id ident_socio_id_enum, 
 	nome_ou_razao_social VARCHAR(255), 
     cnpj_ou_cpf CHAR(14), -- tem * nos dados 
@@ -102,42 +103,44 @@ CREATE TABLE Socio (
 );
 
 CREATE TABLE Estabelecimento (
+    -- tem algum valor com value too long for CHAR(2) --> foram todos colocados como 255, corrigir depois
     cnpj_basico CHAR(8) NOT NULL, 
 	cnpj_ordem CHAR(4) NOT NULL, 
-	cnpj_dv CHAR(2) NOT NULL, 
+	cnpj_dv CHAR(255) NOT NULL, 
 	ident_matriz_filial_id ident_matriz_filial_id_enum,
     nome_fantasia VARCHAR(255), 
 	sit_cadastral_id sit_cadastral_id_enum, 
 	data_sit_cadastral DATE,
-    motivo_sit_cadastral_id CHAR(2), 
+    motivo_sit_cadastral_id CHAR(255), 
 	nome_cidade_exterior VARCHAR(255), 
-	pais_id CHAR(3),
+	pais_id CHAR(255),
     data_inicio_atividade DATE, 
 	cnae_fiscal_principal_id CHAR(7), 
-    cnae_fiscal_secundario_id TEXT [], 
+	cnae_fiscal_secundario_id TEXT,
+    -- cnae_fiscal_secundario_id TEXT [], --> acertar depois
 	tipo_logradouro VARCHAR(255), -- poderia ser ENUM?
     logradouro VARCHAR(255), 
 	numero VARCHAR (10), 
 	complemento VARCHAR(255), 
 	bairro VARCHAR(255),
     cep CHAR(8), 
-	uf CHAR(2), -- tem um EX no meio, possivelmente um ES digitado errado 
+	uf CHAR(255), -- tem um EX no meio, possivelmente um ES digitado errado 
 	municipio VARCHAR(255), 
-	ddd_1 CHAR(2), -- tem telefone de SP com 8 dígitos, sendo que lá se usam 9
+	ddd_1 CHAR(255), -- tem telefone de SP com 8 dígitos, sendo que lá se usam 9
 	tel_1 CHAR(9), 
-	ddd_2 CHAR(2), 
+	ddd_2 CHAR(255), 
 	tel_2 CHAR(9), 
-	ddd_fax CHAR(2), 
+	ddd_fax CHAR(255), 
 	tel_fax CHAR(9), 
 	email VARCHAR(255), 
-	sit_especial_id CHAR(3), 
+	sit_especial_id CHAR(255), 
 	data_sit_especial DATE,
 	PRIMARY KEY (cnpj_basico, cnpj_ordem, cnpj_dv),
 	FOREIGN KEY (ident_matriz_filial_id) REFERENCES IdentMatrizFilial(ident_matriz_filial_id),
 	FOREIGN KEY (sit_cadastral_id) REFERENCES SitCadastral(sit_cadastral_id),
 	FOREIGN KEY (motivo_sit_cadastral_id) REFERENCES MotivoSitCadastral(motivo_sit_cadastral_id),
-	FOREIGN KEY (pais_id) REFERENCES Pais(pais_id),
-	FOREIGN KEY (cnae_fiscal_principal_id) REFERENCES CnaeFiscal(cnae_fiscal_id),
-	FOREIGN KEY (sit_especial_id) REFERENCES SitEspecial(sit_especial_id)
+	-- FOREIGN KEY (pais_id) REFERENCES Pais(pais_id), --> tem tanto erro que eu vou checar depois
+	FOREIGN KEY (cnae_fiscal_principal_id) REFERENCES CnaeFiscal(cnae_fiscal_id)
+	-- FOREIGN KEY (sit_especial_id) REFERENCES SitEspecial(sit_especial_id) --> dados desatualizados na tabela SitEspecial
 );
 

@@ -123,6 +123,7 @@ VALUES
 ('33','Tesoureiro'),
 ('34','Titular de Empresa Individual Imobiliária'),
 ('35','Tutor'),
+('36', NULL),
 ('37','Sócio Pessoa Jurídica Domiciliado no Exterior'),
 ('38','Sócio Pessoa Física Residente no Exterior'),
 ('39','Diplomata'),
@@ -224,6 +225,7 @@ VALUES
 ('145', 'CAMAROES'),
 ('149', 'CANADA'),
 ('152', 'CANAL (ILHAS NORMANDAS)'),
+('150', NULL),
 ('153', 'CASAQUISTAO, REPUBLICA DO'),
 ('154', 'CATAR'),
 ('158', 'CHILE'),
@@ -283,8 +285,10 @@ VALUES
 ('355', 'HUNGRIA'),
 ('357', 'IEMEN, REPUBLICA DO'),
 ('358', 'IEMEN DEMOCRATICO'),
+('359', NULL),
 ('361', 'INDIA'),
 ('365', 'INDONESIA'),
+('367', NULL),
 ('369', 'IRAQUE'),
 ('372', 'Irã, República Islamica do'),
 ('375', 'IRLANDA'),
@@ -308,6 +312,7 @@ VALUES
 ('442', 'LITUANIA, REPUBLICA DA'),
 ('445', 'LUXEMBURGO'),
 ('447', 'MACAU'),
+('449', NULL),
 ('450', 'MADAGASCAR'),
 ('455', 'MALAISIA'),
 ('458', 'MALAVI'),
@@ -369,6 +374,7 @@ VALUES
 ('675', 'RUANDA'),
 ('676', 'RUSSIA, FEDERACAO DA'),
 ('677', 'SALOMAO, ILHAS'),
+('678', NULL),
 ('685', 'SAARA OCIDENTAL'),
 ('687', 'EL SALVADOR'),
 ('690', 'SAMOA'),
@@ -383,6 +389,7 @@ VALUES
 ('728', 'SENEGAL'),
 ('731', 'SEYCHELLES'),
 ('735', 'SERRA LEOA'),
+('737', NULL), 
 ('738', 'SIKKIM'),
 ('741', 'CINGAPURA'),
 ('744', 'SIRIA, REP. ARABE DA'),
@@ -1886,6 +1893,7 @@ VALUES
 
 INSERT INTO SitEspecial(sit_especial_id, sit_especial_descricao)
 VALUES
+-- FALTA recuperacao judicial
 ('405', 'Início da Falência'),
 ('406', 'Reabilitação da Falência'),
 ('407', 'Inventário do Empresário, do Titular de Empresa Individual de Responsabilidade Limitada ou do Titular de Empresa IndividualImobiliária'),

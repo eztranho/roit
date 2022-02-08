@@ -5,6 +5,7 @@ from glob import glob
 from shutil import move, copyfile
 from pathlib import Path
 import dask.dataframe as dd
+import pandas as pd
 
 '''
 !!! alterar campos de data para separar com hífen
@@ -42,6 +43,7 @@ def deletar_csvs_que_nao_terminam_em_numero(pasta):
                        for um_csv in todos_csvs             
                        if get_nome_do_arquivo(um_csv)[-1] not in numeros_str] # se o último char não for um número
     
+    print(f'apagando os arquivos {csvs_sem_numero}')
     [*map(remove, csvs_sem_numero)]
 
 #=====================================================================================
@@ -57,6 +59,9 @@ class Arquivo(): # dask recomenda não estender dd.DataFrame, então df será at
     
     def __init__(self, caminho_conformed):
         self.caminho_conformed = caminho_conformed
+        
+    def _process_df(self):
+        pass # override 
         
     def _tirar_backslash(self):
         '''
@@ -75,8 +80,10 @@ class Arquivo(): # dask recomenda não estender dd.DataFrame, então df será at
                               sep = ';',
                               header = 0,
                               encoding = 'unicode_escape', # !!! gambiarra para um caractere esotérico que empresa.csv tem --> byte 0xc7. checar 
-                              dtype = str) # por simplicidade
+                              dtype = str) 
         self.df.columns = self.columns
+        self._process_df()
+        # persist df?
         
         # !!! considerar interface fluida --> return self
         
@@ -85,10 +92,21 @@ class Arquivo(): # dask recomenda não estender dd.DataFrame, então df será at
   
 class Empresa(Arquivo): 
     columns = ['cnpj_basico', 'razao_social', 'natureza_juridica_id', 
-               'qualificacao_do_resp_id', 'capital_social', 'porte_id', 'ente federativo']
+               'qualificacao_do_resp_id', 'capital_social', 'porte_id', 'ente_federativo']
+    nome_tabela = 'empresa'
     
     def __init__(self, caminho_conformed):
         super().__init__(caminho_conformed)
+        
+    def _process_df(self):
+        # vai virar classe em Specification
+        
+        # capital_social vem como '1.000,00' --> substituir , por ponto
+        sem_virgula = self.df.capital_social.map(lambda string: string.replace(',', '.'))
+        # deixar dtype como float
+        self.df['capital_social'] = sem_virgula.astype('float64')
+        return
+        
         
 class Socio(Arquivo):
     columns = ['cnpj_basico', 'ident_socio_id', 'nome_ou_razao_social', 
@@ -96,23 +114,38 @@ class Socio(Arquivo):
                'pais_id', 'cpf_representante_legal', 
                'nome_representante', 'qualificacao_representante_id',
                'faixa_etaria_id']
+    nome_tabela = 'socio'  # isso deveria ser gerado a partir de config.py
     
     def __init__(self, caminho_conformed):
         super().__init__(caminho_conformed)
         
+    def _process_df(self):
+        # muda data_entrada de '20110809' (object) para 2011-08-09 (datetime64[ns])
+        self.df['data_entrada'] = dd.to_datetime(self.df.data_entrada) # parse_dates seria melhor?
+        
 class Estabelecimento(Arquivo):
     columns = ['cnpj_basico', 'cnpj_ordem', 'cnpj_dv', 'ident_matriz_filial_id',
                'nome_fantasia', 'sit_cadastral_id', 'data_sit_cadastral',
-               'motivo_sit_cadastral', 'nome_cidade_exterior', 'pais_id',
+               'motivo_sit_cadastral_id', 'nome_cidade_exterior', 'pais_id',
                'data_inicio_atividade', 'cnae_fiscal_principal_id', 
                'cnae_fiscal_secundario_id', 'tipo_logradouro',
                'logradouro', 'numero', 'complemento', 'bairro',
                'cep', 'uf', 'municipio', 'ddd_1', 'tel_1',
                'ddd_2', 'tel_2', 'ddd_fax', 'tel_fax',
                'email', 'sit_especial_id', 'data_sit_especial']
+    nome_tabela = 'estabelecimento'
     
     def __init__(self, caminho_conformed):
         super().__init__(caminho_conformed)
+        
+    def _process_df(self):
+        self.df['data_sit_cadastral'] = dd.to_datetime(self.df.data_sit_cadastral, errors = 'coerce')
+        
+        self.df['data_inicio_atividade'] = dd.to_datetime(self.df.data_inicio_atividade, errors = 'coerce')
+        
+        self.df['data_sit_especial'] = dd.to_datetime(self.df.data_sit_especial, errors = 'coerce')
+        
+    
 
 #=====================================================================================
 # HIGH-LEVEL FUNCTION
@@ -182,9 +215,6 @@ def de_csv_para_csv_transformado(caminho_conformed):
     # e.g. C:\\Users\\Tales\\Desktop\\data_lake\\conformed\\empresa_0.csv
     
     df.to_csv(nome_final, sep = ';', index = False)
-    
-    pasta = path.dirname(caminho_conformed)
-    deletar_csvs_que_nao_terminam_em_numero(pasta)
                                           
-    return
+    return obj # Empresa(), Socio() ou Estabelecimento()
 

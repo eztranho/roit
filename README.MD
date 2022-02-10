@@ -52,13 +52,14 @@ Em ordem de urgência:
 ### Como rodar o programa?
 1. Criar banco de dados local e colocar os parâmetros em config.py (nome da database, username, password, host e port);
 2. Rodar os 2 scripts: sql/create_tables.sql e sql/insert_intos.sql;
-3. Escrever full_path do pasta onde ficará o data lake e colocar em DATA_LAKE_PATH em config.py (como exemplo, eu deixei o caminho que eu usei comentado).
+3. Escrever full_path do pasta onde ficará o data lake e colocar em DATA_LAKE_PATH em config.py (como exemplo, eu deixei o caminho que eu usei comentado);
+4. Executar main.bat.
 ### Qual é o volume de dados exigido no data lake?
 Na rodada atual (fev/2022):
 + Raw: 807 MB
 + Standardized: 2.65 GB
 + Conformed: 2.17GB
-+ Aplicação: 11.8 GB (foi usado dump com insert intos e arquivo final com extensão em .sql por ser mais geral que as outras formas de backup. Uma versão compactada poderia ter sido usada, diminuindo esse tamanho)
++ Aplicação: 11.8 GB (foi usado dump com insert into e arquivo final com extensão em .sql por ser mais geral que as outras formas de backup. Uma versão compactada poderia ter sido usada para diminuir esse tamanho)
 ### E o que você aprendeu?
 + A não assumir que os dados vão vir com as restrições de integridade prometidas. Criar um modelo de dados e rejeitar todas as linhas que o violem é muito mais eficiente que ficar criando exceções e tentando tratar entradas ruins;
 + Não procurar a perfeição logo no primeiro momento. Vai ficar feio antes de ficar bonito!
